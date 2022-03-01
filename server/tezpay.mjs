@@ -23,9 +23,18 @@ class Tezpay {
 		return true;
 	}
 
-	async is_payment_confirmed(external_id, block_confirmations) {
-		let confirmation = await da.get_confirmation(this.db_pool, { external_id, block_confirmations });
-
+	async is_payment_confirmed(external_id, safe_block_height) {
+		let confirmation_result = await da.get_confirmed(this.db_pool, { external_id, safe_block_height });
+		if (confirmation_result.length == 0) {
+			return false;
+		}
+		let confirmation = confirmation_result[0];
+		let double_claim_detector = await da.get_claim_count(this.db_pool, confirmation.opg_hash);
+		if (double_claim_detector.count != 1) {
+			// DOUBLE CLAIMED PAYMENT! SOME KIND OF RED FLAG IS NEEDED
+			return false;
+		}
+		return confirmation;
 	}
 
 }

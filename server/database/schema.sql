@@ -2,8 +2,9 @@ CREATE SCHEMA IF NOT EXISTS tezpay;
 
 CREATE TABLE IF NOT EXISTS tezpay.payments
 (
+--	dapp_url character varying(128) NOT NULL,
 	external_id character varying(128) NOT NULL,
-	mutez_amount numeric(18) NOT NULL,
+	mutez_amount numeric(18,0) NOT NULL,
 	receiver_address character(36) NOT NULL,
 	created_at timestamp with time zone NOT NULL DEFAULT now(),
 	last_updated_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -13,8 +14,9 @@ CREATE TABLE IF NOT EXISTS tezpay.payments
 CREATE TABLE IF NOT EXISTS tezpay.receipts
 (
 	id SERIAL,
+--	dapp_url character varying(128) NOT NULL
 	payment_id character varying(128) NOT NULL,
-	mutez_amount numeric(18) NOT NULL,
+	mutez_amount numeric(18,0) NOT NULL,
 	receiver_address character(36) NOT NULL,
 	opg_hash character(51) NOT NULL,
 --	operation_index integer NOT NULL,
