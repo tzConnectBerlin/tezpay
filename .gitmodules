@@ -1,0 +1,3 @@
+[submodule "transfers"]
+	path = transfers
+	url = https://github.com/tzConnectBerlin/transfers.git
