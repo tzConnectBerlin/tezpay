@@ -31,26 +31,18 @@ The `message` field differs between requested payments, where it is a server-sid
 
 #### Components
 
-- Wallet (Beacon)
-- Taquito
-- Payment manager
+- Client
+  - Taquito
+- Server
+  - Payments DB
+  - Payments data access layer
+  - Que-pasa
+- Blockchain
+  - Paypoint contract
 
 #### Behavior
 
-- FRONTEND: Accepts payment data from serverside
-- FRONTEND: Sends tez through Beacon / taquito
-  - USER confirms transfer operation
-- FRONTEND -> TEZPAY_CLIENT: Generates well-formed receipt payload
-- FRONTEND -> TEZPAY_CLIENT: Signs receipt payload through Beacon
-  - USER confirms payload signing
-- FRONTEND: Sends signed payload to server
+SERVER - [saves payment record to DB] and sends data to client
+CLIENT - [assembles transfer object] and sends transfer
+SERVER - [queries Que-pasa for payment fulfillment]
 
-## Threat analysis
-
-- Impersonation: a malicious party claiming another's payment
-    - Prevented by requiring the receipt to be signed with the key of the sender address
-- MITM: a sophisticated fake dApp could get a user to sign a manipulated receipt (eg. replacing the payment identifier)
-    - Mitigated by purchase id clearly readable in metadata, actively validated by backend
-    - Mitigated by requiring payment amount to exactly match invoice
-- Replay: a malicious party re-using a signed payment receipt
-    - Non-issue; the on-chain transfer is unique
