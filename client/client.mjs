@@ -6,3 +6,5 @@ const get_transfer_object = async function(tezos, { paypoint_contract_address, a
 	transfer.amount = amount;
 	return transfer;
 }
+
+export default get_transfer_object;
