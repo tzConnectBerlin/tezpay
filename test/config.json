@@ -1,0 +1,14 @@
+{
+	"confirmations": 1,
+	"privateKey": "edsk4bez7gitexgSnBHgBBX3rEBkbkx79udFCv5cvo9cb4Cc6iQhRm",
+	"paypointSchema": "paypoint",
+	"rpcUrl": "http://art-basel.tzconnect.berlin:18732",
+	"dbConnection": {
+			"user": "quepasa",
+			"password": "quepasa",
+			"host": "localhost",
+			"port": 5432,
+			"database": "kanvas"
+	},
+	"mutezAmount": 1000
+}

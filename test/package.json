@@ -1,0 +1,19 @@
+{
+	"name": "tezpay-test-harness",
+	"version": "0.1",
+	"description": "",
+	"main": "test.mjs",
+	"scripts": {
+		"test": "node test.mjs"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"console-stamp": "^3.0.4",
+		"pg": "^8.7.3",
+		"@taquito/signer": "^12.1.0",
+		"@taquito/taquito": "^12.1.0",
+		"uuid": "8.3.2"
+	}
+}
