@@ -1,0 +1,8 @@
+{
+  "name": "tezpay-server",
+  "version": "0.0.1",
+  "description": "tez payments",
+  "main": "tezpay.mjs",
+  "author": "dani",
+  "license": "MIT"
+}
