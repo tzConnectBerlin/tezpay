@@ -40,6 +40,10 @@ class Tezpay {
 		};
 	}
 
+	cancel_payment(external_id) {
+		return this.da.cancel_payment({ external_id });
+	}
+
 }
 
 export default Tezpay;

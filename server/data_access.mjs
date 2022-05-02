@@ -1,6 +1,6 @@
 const GET_CONTRACT_ADDRESS = "SELECT address FROM que_pasa.contracts WHERE name = $1";
 const SAVE_PAYMENT_SQL = "INSERT INTO tezpay.payments (external_id, mutez_amount, receiver_address) VALUES ($1, $2, $3)";
-//const CANCEL_PAYMENT_SQL = "UPDATE tezpay.payments "
+const CANCEL_PAYMENT_SQL = "UPDATE tezpay.payments SET is_cancelled = TRUE WHERE external_id = $1";
 const GET_PAYMENT_SQL = "SELECT * FROM tezpay.payments WHERE external_id = $1";
 
 export default function({db, paypoint_schema_name}) {
@@ -16,6 +16,10 @@ export default function({db, paypoint_schema_name}) {
 		return db.query(SAVE_PAYMENT_SQL, [external_id, mutez_amount, receiver_address]);
 	};
 
+	const cancel_payment = function({ external_id }) {
+		return db.query(CANCEL_PAYMENT_SQL, [external_id]);
+	}
+
 	const get_payment = async function({ external_id }) {
 		let result = await db.query(GET_PAYMENT_SQL, [ external_id ]);
 		return result.rows[0];
@@ -29,6 +33,7 @@ export default function({db, paypoint_schema_name}) {
 	return {
 		get_paypoint_address,
 		save_payment,
+		cancel_payment,
 		get_payment,
 		get_fulfillments
 	};
