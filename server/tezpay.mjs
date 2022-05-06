@@ -9,7 +9,7 @@ class Tezpay {
  	async init_payment({ external_id, mutez_amount }) {
 		if (!this.receiver_address) {
 			this.receiver_address = await this.da.get_paypoint_address();
-			console.log("Paypoint address queried: ", this.receiver_address);
+//			console.log("Paypoint address queried: ", this.receiver_address);
 		}
  		let payment_description = {
  			external_id,
