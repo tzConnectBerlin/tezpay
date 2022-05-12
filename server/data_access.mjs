@@ -21,14 +21,14 @@ export default function({db, paypoint_schema_name}) {
 
 	const get_payment = async function({ external_id }) {
 		let result = (await db.query(GET_PAYMENT_SQL, [external_id])).rows[0];
-		result.mutez_amount = Number(result.mutez_amount);
+		result.mutez_amount = BigInt(result.mutez_amount);
 		return result;
 	};
 
 	const get_fulfillments = async function ({ message, block_confirmations }) {
 		let result = await db.query(GET_FULFILLMENTS_SQL, [message, block_confirmations])
 		return result.rows.map(row => {
-			row.amount = Number(row.amount);
+			row.amount = BigInt(row.amount);
 			return row;
 		});
 	}
