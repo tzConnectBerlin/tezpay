@@ -4,7 +4,31 @@ const CANCEL_PAYMENT_SQL = "UPDATE tezpay.payments SET is_cancelled = TRUE WHERE
 const GET_PAYMENT_SQL = "SELECT * FROM tezpay.payments WHERE external_id = $1";
 
 export default function({db, paypoint_schema_name}) {
-	let GET_FULFILLMENTS_SQL = `SELECT tx_contexts.level, txs.operation_hash, txs.amount, entries.string as message FROM ${paypoint_schema_name}."entry.pay" as entries INNER JOIN que_pasa.tx_contexts as tx_contexts ON tx_contexts.id = entries.tx_context_id INNER JOIN que_pasa.txs as txs ON txs.tx_context_id = entries.tx_context_id WHERE entries.string = $1 AND tx_contexts.level < (SELECT max(level) FROM que_pasa.levels) - $2`;
+	let GET_FULFILLMENTS_SQL = `
+SELECT
+  tx_contexts.level,
+  txs.operation_hash,
+  txs.amount,
+  entries.msg as message
+FROM (
+  SELECT
+    tx_context_id,
+    string AS msg
+  FROM ${paypoint_schema_name}."entry.pay"
+
+  UNION ALL
+
+  SELECT
+    tx_context_id,
+    pay AS msg
+  FROM ${paypoint_schema_name}."entry.default"
+) AS entries
+INNER JOIN que_pasa.tx_contexts AS tx_contexts
+  ON tx_contexts.id = entries.tx_context_id
+INNER JOIN que_pasa.txs AS txs
+  ON txs.tx_context_id = entries.tx_context_id
+WHERE entries.msg = $1
+  AND tx_contexts.level < (SELECT max(level) FROM que_pasa.levels) - $2`;
 
 	const get_paypoint_address = async function() {
 		let result = await db.query(GET_CONTRACT_ADDRESS, [paypoint_schema_name]);
